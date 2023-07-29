@@ -317,7 +317,7 @@ pub struct SkimScoreConfig {
 impl Default for SkimScoreConfig {
     fn default() -> Self {
         let score_match = 16;
-        let gap_start = -3;
+        let gap_start = -4;
         let gap_extension = -1;
 
         Self {
