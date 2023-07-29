@@ -29,7 +29,8 @@ const BONUS_MATCHED: ScoreType = 4;
 const BONUS_CASE_MATCH: ScoreType = 4;
 const BONUS_UPPER_MATCH: ScoreType = 6;
 const BONUS_ADJACENCY: ScoreType = 10;
-const BONUS_SEPARATOR: ScoreType = 8;
+const BONUS_SEPARATOR_HARD: ScoreType = 8;
+const BONUS_SEPARATOR_SOFT: ScoreType = 4;
 const BONUS_CAMEL: ScoreType = 8;
 const PENALTY_CASE_UNMATCHED: ScoreType = -1;
 const PENALTY_LEADING: ScoreType = -6;
@@ -257,8 +258,10 @@ fn fuzzy_score(
     }
 
     // apply bonus for matches after a separator
-    if choice_prev_ch_type == CharType::HardSep || choice_prev_ch_type == CharType::SoftSep {
-        score += BONUS_SEPARATOR;
+    if choice_prev_ch_type == CharType::HardSep {
+        score += BONUS_SEPARATOR_HARD;
+    } else if choice_prev_ch_type == CharType::SoftSep {
+        score += BONUS_SEPARATOR_SOFT;
     }
 
     if pat_idx == 0 {
