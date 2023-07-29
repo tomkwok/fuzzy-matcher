@@ -491,8 +491,8 @@ impl CharType {
     pub fn of(ch: char) -> Self {
         match ch {
             '\0' => CharType::Empty,
-            ' ' | '/' | '\\' | '|' | '(' | ')' | '[' | ']' | '{' | '}' => CharType::HardSep,
-            '!'..='\'' | '*'..='.' | ':'..='@' | '^'..='`' | '~' => CharType::SoftSep,
+            ' ' | '/' | '\\' | '|' | '.' | ',' | ':' | ';' | '~' | '\t' | '\n' | '\r' => CharType::HardSep,
+            '!'..='+' | '-' | '<'..='@' | '[' | ']' | '^'..='`' | '{' | '}' => CharType::SoftSep,
             '0'..='9' => CharType::Number,
             'A'..='Z' => CharType::Upper,
             _ => CharType::Lower,
