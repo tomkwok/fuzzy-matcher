@@ -1,25 +1,25 @@
-///! The fuzzy matching algorithm used in clangd.
-///! https://github.com/llvm-mirror/clang-tools-extra/blob/master/clangd/FuzzyMatch.cpp
-///!
-///! # Example:
-///! ```edition2018
-///! use fuzzy_matcher::FuzzyMatcher;
-///! use fuzzy_matcher::clangd::ClangdMatcher;
-///!
-///! let matcher = ClangdMatcher::default();
-///!
-///! assert_eq!(None, matcher.fuzzy_match("abc", "abx"));
-///! assert!(matcher.fuzzy_match("axbycz", "abc").is_some());
-///! assert!(matcher.fuzzy_match("axbycz", "xyz").is_some());
-///!
-///! let (score, indices) = matcher.fuzzy_indices("axbycz", "abc").unwrap();
-///! assert_eq!(indices, [0, 2, 4]);
-///!
-///! ```
-///!
-///! Algorithm modified from
-///! https://github.com/llvm-mirror/clang-tools-extra/blob/master/clangd/FuzzyMatch.cpp
-///! Also check: https://github.com/lewang/flx/issues/98
+// The fuzzy matching algorithm used in clangd.
+// https://github.com/llvm-mirror/clang-tools-extra/blob/master/clangd/FuzzyMatch.cpp
+//
+// # Example:
+// ```edition2018
+// use fuzzy_matcher::FuzzyMatcher;
+// use fuzzy_matcher::clangd::ClangdMatcher;
+//
+// let matcher = ClangdMatcher::default();
+//
+// assert_eq!(None, matcher.fuzzy_match("abc", "abx"));
+// assert!(matcher.fuzzy_match("axbycz", "abc").is_some());
+// assert!(matcher.fuzzy_match("axbycz", "xyz").is_some());
+//
+// let (score, indices) = matcher.fuzzy_indices("axbycz", "abc").unwrap();
+// assert_eq!(indices, [0, 2, 4]);
+//
+// ```
+//
+// Algorithm modified from
+// https://github.com/llvm-mirror/clang-tools-extra/blob/master/clangd/FuzzyMatch.cpp
+// Also check: https://github.com/lewang/flx/issues/98
 use crate::util::*;
 use crate::{FuzzyMatcher, IndexType, ScoreType};
 use std::cell::RefCell;
@@ -116,6 +116,7 @@ impl FuzzyMatcher for ClangdMatcher {
             pattern_chars.push(char);
         }
 
+        #[allow(clippy::all)]
         if cheap_matches(&choice_chars, &pattern_chars, case_sensitive).is_none() {
             return None;
         }
@@ -186,6 +187,7 @@ impl FuzzyMatcher for ClangdMatcher {
             pattern_chars.push(char);
         }
 
+        #[allow(clippy::all)]
         if cheap_matches(&choice_chars, &pattern_chars, case_sensitive).is_none() {
             return None;
         }

@@ -8,21 +8,21 @@ use thread_local::CachedThreadLocal;
 
 use crate::skim::Movement::{Match, Skip};
 use crate::util::{char_equal, cheap_matches};
-///! The fuzzy matching algorithm used by skim
-///!
-///! # Example:
-///! ```edition2018
-///! use fuzzy_matcher::FuzzyMatcher;
-///! use fuzzy_matcher::skim::SkimMatcherV2;
-///!
-///! let matcher = SkimMatcherV2::default();
-///! assert_eq!(None, matcher.fuzzy_match("abc", "abx"));
-///! assert!(matcher.fuzzy_match("axbycz", "abc").is_some());
-///! assert!(matcher.fuzzy_match("axbycz", "xyz").is_some());
-///!
-///! let (score, indices) = matcher.fuzzy_indices("axbycz", "abc").unwrap();
-///! assert_eq!(indices, [0, 2, 4]);
-///! ```
+// The fuzzy matching algorithm used by skim
+//
+// # Example:
+// ```edition2018
+// use fuzzy_matcher::FuzzyMatcher;
+// use fuzzy_matcher::skim::SkimMatcherV2;
+//
+// let matcher = SkimMatcherV2::default();
+// assert_eq!(None, matcher.fuzzy_match("abc", "abx"));
+// assert!(matcher.fuzzy_match("axbycz", "abc").is_some());
+// assert!(matcher.fuzzy_match("axbycz", "xyz").is_some());
+//
+// let (score, indices) = matcher.fuzzy_indices("axbycz", "abc").unwrap();
+// assert_eq!(indices, [0, 2, 4]);
+// ```
 use crate::{FuzzyMatcher, IndexType, ScoreType};
 
 const BONUS_MATCHED: ScoreType = 4;
@@ -39,13 +39,8 @@ const PENALTY_MAX_LEADING: ScoreType = -18;
 const PENALTY_UNMATCHED: ScoreType = -2;
 
 #[deprecated(since = "0.3.5", note = "Please use SkimMatcherV2 instead")]
+#[derive(Default)]
 pub struct SkimMatcher {}
-
-impl Default for SkimMatcher {
-    fn default() -> Self {
-        Self {}
-    }
-}
 
 /// The V1 matcher is based on ForrestTheWoods's post
 /// https://www.forrestthewoods.com/blog/reverse_engineering_sublime_texts_fuzzy_match/
@@ -79,6 +74,7 @@ pub fn fuzzy_match(choice: &str, pattern: &str) -> Option<ScoreType> {
 }
 
 #[deprecated(since = "0.3.5", note = "Please use SkimMatcherV2 instead")]
+#[allow(clippy::unnecessary_cast)]
 pub fn fuzzy_indices(choice: &str, pattern: &str) -> Option<(ScoreType, Vec<IndexType>)> {
     if pattern.is_empty() {
         return Some((0, Vec::new()));
@@ -125,6 +121,7 @@ impl Default for MatchingStatus {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 fn build_graph(choice: &str, pattern: &str) -> Option<Vec<Vec<MatchingStatus>>> {
     let mut scores = vec![];
 
@@ -945,7 +942,7 @@ impl SkimMatcherV2 {
         case_sensitive: bool,
         with_pos: bool,
     ) -> Option<(ScoreType, Vec<IndexType>)> {
-        if pattern.len() <= 0 {
+        if pattern.is_empty() {
             return Some((0, Vec::new()));
         } else if pattern.len() == 1 {
             let match_idx = first_match_indices[0];
