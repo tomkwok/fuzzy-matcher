@@ -285,7 +285,7 @@ pub struct SkimScoreConfig {
     /// bonus points are given. e.g. "to-go" vs. "ongoing" on "og" or on "ogo".
     /// The amount of the extra bonus should be limited so that the gap penalty is
     /// still respected.
-    pub bonus_first_char_multiplier: i32,
+    pub bonus_first_char: i32,
 
     /// We prefer matches at the beginning of a word, but the bonus should not be
     /// too great to prevent the longer acronym matches from always winning over
@@ -319,13 +319,12 @@ impl Default for SkimScoreConfig {
         let score_match = 16;
         let gap_start = -3;
         let gap_extension = -1;
-        let bonus_first_char_multiplier = 2;
 
         Self {
             score_match,
             gap_start,
             gap_extension,
-            bonus_first_char_multiplier,
+            bonus_first_char: score_match / 4,
             bonus_head: score_match / 4,
             bonus_break: score_match / 4 + gap_extension,
             bonus_camel: score_match / 4,
@@ -763,7 +762,7 @@ impl SkimMatcherV2 {
         }
 
         if b.len() > 1 {
-            b[1] *= self.score_config.bonus_first_char_multiplier;
+            b[1] += self.score_config.bonus_first_char;
         }
     }
 
