@@ -326,9 +326,9 @@ impl Default for SkimScoreConfig {
             gap_start,
             gap_extension,
             bonus_first_char_multiplier,
-            bonus_head: score_match / 2,
-            bonus_break: score_match / 2 + gap_extension,
-            bonus_camel: score_match / 2 + 2 * gap_extension,
+            bonus_head: score_match / 4,
+            bonus_break: score_match / 4 + gap_extension,
+            bonus_camel: score_match / 4,
             bonus_consecutive: -(gap_start + gap_extension),
             penalty_case_mismatch: gap_extension * 2,
         }
