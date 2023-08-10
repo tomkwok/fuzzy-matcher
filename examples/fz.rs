@@ -4,7 +4,7 @@ use fuzzy_matcher::FuzzyMatcher;
 use std::env;
 use std::io::{self, BufRead};
 use std::process::exit;
-use termion::style::{Invert, Reset};
+use crossterm::style::Attribute;
 
 #[cfg(not(feature = "compact"))]
 type IndexType = usize;
@@ -54,7 +54,7 @@ fn wrap_matches(line: &str, indices: &[IndexType]) -> String {
     for (idx, ch) in line.chars().enumerate() {
         let next_id = **peekable.peek().unwrap_or(&&(line.len() as IndexType));
         if next_id == (idx as IndexType) {
-            ret.push_str(format!("{}{}{}", Invert, ch, Reset).as_str());
+            ret.push_str(format!("{}{}{}", Attribute::Reverse, ch, Attribute::Reset).as_str());
             peekable.next();
         } else {
             ret.push(ch);
